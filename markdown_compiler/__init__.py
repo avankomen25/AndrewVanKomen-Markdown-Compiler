@@ -133,12 +133,35 @@ def compile_lines(text):
     lines = text.split('\n')
     new_lines = []
     in_paragraph = False
+    in_code_block = False 
+
+
     for line in lines:
-        line = line.strip()
+        stripped = line.strip()
+
+# handle triple backticks
+        if stripped.startswith('```'):
+            if not in_code_block:
+                new_lines.append('<pre>')
+                in_code_block = True
+            else:
+                new_lines.append('</pre>')
+                in_code_block = False
+            continue
+
+        if in_code_block:
+            new_lines.append(line.rstrip())
+            continue
+
+        line = stripped
+
         if line=='':
             if in_paragraph:
                 line='</p>'
                 in_paragraph = False
+            else:
+                line = ''
+        
         else:
             if line[0] != '#' and not in_paragraph:
                 in_paragraph = True
@@ -225,7 +248,25 @@ def minify(html):
     >>> minify('a\n\n\n\n\n\n\n\n\n\n\n\n\n\nb\n\n\n\n\n\n\n\n\n\n')
     'a b'
     '''
-    return html
+    result = ''
+    i = 0
+    prev_was_space = True  
+
+    while i < len(html):
+        if html[i].isspace():
+            if not prev_was_space:
+                result += ' '
+                prev_was_space = True
+        else:
+            result += html[i]
+            prev_was_space = False
+        i += 1
+
+    
+    if result.endswith(' '):
+        result = result[:-1]
+
+    return result
 
 
 def convert_file(input_file, add_css):
