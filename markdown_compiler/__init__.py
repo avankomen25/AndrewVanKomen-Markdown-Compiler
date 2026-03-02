@@ -3,7 +3,17 @@ This file contains functions that work on entire documents at a time
 (and not line-by-line).
 '''
 
-from markdown_compiler.util.line_functions import *
+from markdown_compiler.util.line_functions import (
+    compile_headers,
+    compile_strikethrough,
+    compile_bold_stars,
+    compile_bold_underscore,
+    compile_italic_star,
+    compile_italic_underscore,
+    compile_code_inline,
+    compile_images,
+    compile_links,
+)
 
 
 def compile_lines(text):
@@ -133,9 +143,7 @@ def compile_lines(text):
     lines = text.split('\n')
     new_lines = []
     in_paragraph = False
-    in_code_block = False 
-
-
+    in_code_block = False
     for line in lines:
         stripped = line.strip()
 
@@ -155,17 +163,16 @@ def compile_lines(text):
 
         line = stripped
 
-        if line=='':
+        if line == '':
             if in_paragraph:
-                line='</p>'
+                line = '</p>'
                 in_paragraph = False
             else:
                 line = ''
-        
         else:
             if line[0] != '#' and not in_paragraph:
                 in_paragraph = True
-                line = '<p>\n'+line
+                line = '<p>\n' + line
             line = compile_headers(line)
             line = compile_strikethrough(line)
             line = compile_bold_stars(line)
@@ -211,10 +218,10 @@ def markdown_to_html(markdown, add_css):
 <link rel="stylesheet" href="https://izbicki.me/css/code.css" />
 <link rel="stylesheet" href="https://izbicki.me/css/default.css" />
         '''
-    html+='''
+    html += '''
 </head>
 <body>
-    '''+compile_lines(markdown)+'''
+    ''' + compile_lines(markdown) + '''
 </body>
 </html>
     '''
@@ -250,7 +257,7 @@ def minify(html):
     '''
     result = ''
     i = 0
-    prev_was_space = True  
+    prev_was_space = True
 
     while i < len(html):
         if html[i].isspace():
@@ -261,8 +268,6 @@ def minify(html):
             result += html[i]
             prev_was_space = False
         i += 1
-
-    
     if result.endswith(' '):
         result = result[:-1]
 
@@ -295,5 +300,5 @@ def convert_file(input_file, add_css):
     html = minify(html)
 
     # write the output file
-    with open(input_file[:-2]+'html', 'w') as f:
+    with open(input_file[:-2] + 'html', 'w') as f:
         f.write(html)

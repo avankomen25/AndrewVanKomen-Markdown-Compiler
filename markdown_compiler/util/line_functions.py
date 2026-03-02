@@ -2,6 +2,7 @@
 Each of the functions in this file takes a single line of input and transforms the line in some way.
 '''
 
+
 def compile_headers(line):
     '''
     Convert markdown headers into <h1>,<h2>,etc tags.
@@ -27,7 +28,7 @@ def compile_headers(line):
     '      # this is not a header'
     '''
     for i in range(1, 7):
-        if line[:i+1] == '#' * i + ' ':
+        if line[:i + 1] == '#' * i + ' ':
             return '<h' + str(i) + '>' + line[i:] + '</h' + str(i) + '>'
     return line
 
@@ -56,17 +57,17 @@ def compile_italic_star(line):
     result = ''
     i = 0
     while i < len(line):
-        if line [i] == '*':
-            if '*' in line[i+1:]:
-                end = line.find('*', i+1)
-                result += '<i>' +line[i+1:end] + '</i>'
+        if line[i] == '*':
+            if '*' in line[i + 1:]:
+                end = line.find('*', i + 1)
+                result += '<i>' + line[i + 1:end] + '</i>'
                 i = end + 1
             else:
                 result += '*'
                 i += 1
-        else: 
+        else:
             result += line[i]
-            i += 1 
+            i += 1
     return result
 
 
@@ -92,9 +93,9 @@ def compile_italic_underscore(line):
     i = 0
     while i < len(line):
         if line[i] == '_':
-            if '_' in line[i+1:]:
-                end = line.find('_', i+1)
-                result += '<i>' + line[i+1:end] + '</i>'
+            if '_' in line[i + 1:]:
+                end = line.find('_', i + 1)
+                result += '<i>' + line[i + 1:end] + '</i>'
                 i = end + 1
             else:
                 result += '_'
@@ -129,10 +130,10 @@ def compile_strikethrough(line):
     i = 0
 
     while i < len(line):
-        if line[i:i+2] == '~~':
-            if '~~' in line[i+2:]:
-                end = line.find('~~', i+2)
-                result += '<ins>' + line[i+2:end] + '</ins>'
+        if line[i:i + 2] == '~~':
+            if '~~' in line[i + 2:]:
+                end = line.find('~~', i + 2)
+                result += '<ins>' + line[i + 2:end] + '</ins>'
                 i = end + 2
             else:
                 result += '~~'
@@ -166,10 +167,10 @@ def compile_bold_stars(line):
     i = 0
 
     while i < len(line):
-        if line[i:i+2] == '**':
-            if '**' in line[i+2:]:
-                end = line.find('**', i+2)
-                result += '<b>' + line[i+2:end] + '</b>'
+        if line[i:i + 2] == '**':
+            if '**' in line[i + 2:]:
+                end = line.find('**', i + 2)
+                result += '<b>' + line[i + 2:end] + '</b>'
                 i = end + 2
             else:
                 result += '**'
@@ -203,10 +204,10 @@ def compile_bold_underscore(line):
     i = 0
 
     while i < len(line):
-        if line[i:i+2] == '__':
-            if '__' in line[i+2:]:
-                end = line.find('__', i+2)
-                result += '<b>' + line[i+2:end] + '</b>'
+        if line[i:i + 2] == '__':
+            if '__' in line[i + 2:]:
+                end = line.find('__', i + 2)
+                result += '<b>' + line[i + 2:end] + '</b>'
                 i = end + 2
             else:
                 result += '__'
@@ -252,9 +253,9 @@ def compile_code_inline(line):
     i = 0
     while i < len(line):
         if line[i] == '`':
-            if '`' in line[i+1:]:
+            if '`' in line[i + 1:]:
                 end = line.find('`', i + 1)
-                code_text = line[i+1:end]
+                code_text = line[i + 1:end]
                 code_text = code_text.replace('<', '&lt;')
                 code_text = code_text.replace('>', '&gt;')
                 result += '<code>' + code_text + '</code>'
@@ -291,13 +292,13 @@ def compile_links(line):
 
     while i < len(line):
         if line[i] == '[':
-            close_bracket = line.find(']', i+1) # returns -1 if no ]
+            close_bracket = line.find(']', i + 1)   # returns -1 if no ]
             if close_bracket != -1 and close_bracket + 1 < len(line) and line[close_bracket + 1] == '(':
                 close_paren = line.find(')', close_bracket + 2)
                 if close_paren != -1:
-                    text = line[i+1:close_bracket]
-                    url = line[close_bracket+2:close_paren]
-                    result += f'<a href="{url}">{text}</a>' # formatted string
+                    text = line[i + 1:close_bracket]
+                    url = line[close_bracket + 2:close_paren]
+                    result += f'<a href="{url}">{text}</a>'   # formatted string
                     i = close_paren + 1
                     continue
             result += line[i]
@@ -329,13 +330,13 @@ def compile_images(line):
     i = 0
 
     while i < len(line):
-        if line[i:i+2] == '![':
-            close_bracket = line.find(']', i+2)
+        if line[i:i + 2] == '![':
+            close_bracket = line.find(']', i + 2)
             if close_bracket != -1 and close_bracket + 1 < len(line) and line[close_bracket + 1] == '(':
                 close_paren = line.find(')', close_bracket + 2)
                 if close_paren != -1:
-                    alt_text = line[i+2:close_bracket]
-                    url = line[close_bracket+2:close_paren]
+                    alt_text = line[i + 2:close_bracket]
+                    url = line[close_bracket + 2:close_paren]
                     result += f'<img src="{url}" alt="{alt_text}" />'
                     i = close_paren + 1
                     continue
