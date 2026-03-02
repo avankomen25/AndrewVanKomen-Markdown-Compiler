@@ -1,8 +1,8 @@
 # Markdown to HTML compiler
 
-![](https://github.com/avankomen25/markdown-compiler-AndrewVanKomen/workflows/doctests/badge.svg)&nbsp;
-![](https://github.com/avankomen25/markdown-compiler-AndrewVanKomen/workflows/flake8/badge.svg)&nbsp;
-![](https://github.com/avankomen25/markdown-compiler-AndrewVanKomen/workflows/command_line/badge.svg)&nbsp;
+![](https://github.com/avankomen25/AndrewVanKomen-markdown-compiler/workflows/doctests/badge.svg)&nbsp;
+![](https://github.com/avankomen25/AndrewVanKomen-markdown-compiler/workflows/flake8/badge.svg)&nbsp;
+![](https://github.com/avankomen25/AndrewVanKomen-markdown-compiler/workflows/command_line/badge.svg)&nbsp;
 
 A simple project for converting markdown files to HTML.
 
